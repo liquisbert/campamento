@@ -1,0 +1,79 @@
+⚠️ IMPORTANTE: PROBLEMA DE CREDENCIALES EN GIT
+
+═════════════════════════════════════════════════════════════════════════════
+
+GitHub detectó que los commits anteriores contienen credenciales de Twilio.
+Esto es por seguridad, pero necesitamos resolverlo para hacer push.
+
+═════════════════════════════════════════════════════════════════════════════
+
+📋 QUÉ PASÓ:
+
+1. Los archivos de documentación tenían credenciales Twilio reales
+2. GitHub Push Protection bloqueó el push automáticamente
+3. Las credenciales en .env local están en .gitignore (está bien)
+
+═════════════════════════════════════════════════════════════════════════════
+
+🔓 CÓMO RESOLVER:
+
+OPCIÓN 1: Desbloquear el Secret en GitHub (RECOMENDADO)
+─────────────────────────────────────────────
+
+1. Ve a:
+   https://github.com/liquisbert/campamento/security/secret-scanning/unblock-secret/36zUX8zJknVLZBdLQNvd0TcgdPe
+
+2. Click: "Allow me to push this secret" (si confías que está asegurado)
+
+3. Vuelve a la terminal y ejecuta:
+   git push origin main
+
+Listo! El push se completará.
+
+
+OPCIÓN 2: Editar Historial de Git (Si quieres ser ultra seguro)
+───────────────────────────────────────────────────────────
+
+1. Ejecuta en PowerShell:
+   cd C:\Users\Laskar\Documents\Dev\campamento
+   git log --oneline
+   
+   (Busca el commit: d4618e1450e53b9f)
+
+2. Revierte todos los cambios luego de ese commit:
+   git reset --soft d4618e1450e53b9f^
+   git reset HEAD
+
+3. Agrega solo los archivos seguros:
+   git add src/ netlify.toml .gitignore
+   git commit -m "Agregar código seguro para despliegue"
+
+4. Push:
+   git push origin main
+
+
+═════════════════════════════════════════════════════════════════════════════
+
+✅ LO QUE HICIMOS YA:
+
+• .env está en .gitignore (no se sube a GitHub)
+• .env contiene placeholders [TU_ACCOUNT_SID]
+• .env.example actualizado con instrucciones
+• Código limpio sin credenciales
+
+
+═════════════════════════════════════════════════════════════════════════════
+
+🚀 PRÓXIMO PASO:
+
+1. Ve al link GitHub que te proporciona el error o directamente a:
+   https://github.com/liquisbert/campamento/security
+
+2. Click: "Unblock secret"
+
+3. Luego ejecuta:
+   git push origin main
+
+Eso es todo!
+
+═════════════════════════════════════════════════════════════════════════════

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { registerUser } from '../firebase/auth';
-import { sendWhatsAppDirect, generateQRUrl } from '../firebase/twilio';
 import './Auth.css';
 
 const ParticipantRegistration = ({ onClose }) => {
@@ -32,14 +31,14 @@ const ParticipantRegistration = ({ onClose }) => {
       const password = formData.password || Math.random().toString(36).slice(-8);
 
       // Registrar usuario (esto ya envía WhatsApp en auth.js)
-      const result = await registerUser(
+      // Registrar usuario (esto ya envía WhatsApp en auth.js)
+      await registerUser(
         formData.email,
         password,
         formData.name,
         formData.phoneNumber,
         'participant'
       );
-
       // Si llegamos aquí, el registro fue exitoso
       // El WhatsApp ya se envió automáticamente en registerUser()
       setSuccess(`✅ Participante "${formData.name}" registrado correctamente. ¡WhatsApp enviado!`);

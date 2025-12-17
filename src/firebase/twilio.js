@@ -6,25 +6,6 @@ const twilioWhatsAppNumber = process.env.REACT_APP_TWILIO_WHATSAPP_NUMBER;
 const TWILIO_API_URL = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
 
 /**
- * Convierte una URL de imagen a base64 (para enviar como attachment)
- */
-const urlToBase64 = async (url) => {
-  try {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result.split(',')[1]);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  } catch (error) {
-    console.error('Error convirtiendo imagen a base64:', error);
-    throw error;
-  }
-};
-
-/**
  * Envía un mensaje WhatsApp con imagen del QR usando Twilio directamente
  * @param {string} phoneNumber - Número del participante (ej: +56912345678)
  * @param {string} message - Mensaje a enviar
