@@ -1,0 +1,82 @@
+✅ MIGRACIÓN COMPLETADA: Cloud Functions → Twilio Directo
+
+📋 CAMBIOS REALIZADOS
+═════════════════════════════════════════════════════════════
+
+✅ ARCHIVOS MODIFICADOS:
+
+1. .env
+   • Actualizado: Credenciales Twilio con prefijo REACT_APP_
+   • ANTES: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_WHATSAPP_NUMBER
+   • AHORA: REACT_APP_TWILIO_ACCOUNT_SID, REACT_APP_TWILIO_AUTH_TOKEN, REACT_APP_TWILIO_WHATSAPP_NUMBER
+
+2. src/firebase/twilio.js (NUEVO)
+   • 70 líneas de código
+   • sendWhatsAppDirect() - Envía WhatsApp directamente a Twilio
+   • generateQRUrl() - Genera URL del código QR
+   • Usa Basic Auth con Twilio API
+
+3. src/firebase/auth.js
+   • Importa: sendWhatsAppDirect, generateQRUrl
+   • registerUser() - Ahora envía WhatsApp automáticamente al registrar
+   • Sin Cloud Functions, todo es local
+
+4. src/components/ParticipantRegistration.js
+   • Importa: sendWhatsAppDirect, generateQRUrl (en lugar de Cloud Functions)
+   • handleSubmit() - Simplificado (registerUser() ya envía WhatsApp)
+   • Sin referencia a Cloud Functions
+
+5. src/firebase/notifications.js
+   • Limpiado: Removidas funciones de Cloud Functions
+   • Solo mantiene: shareQROnWhatsApp() para compartir manual
+
+6. firebase.json
+   • Removida: Configuración de "functions" (no se necesita)
+   • Mantiene: Solo "hosting" para Firebase Hosting
+
+═════════════════════════════════════════════════════════════
+
+❌ ELIMINADO (YA NO SE NECESITA):
+
+• functions/index.js - Cloud Functions (eliminadas)
+• functions/package.json - Dependencias de Functions (eliminadas)
+• firebase functions:config:set - No se necesita
+
+═════════════════════════════════════════════════════════════
+
+🎯 BENEFICIOS
+
+✅ Más rápido - Sin delay de Cloud Functions
+✅ Más simple - Menos código
+✅ Menos dependencias - No necesita Firebase Functions SDK
+✅ Desarrollo local - Todo funciona offline (con .env)
+✅ Menor costo - No usas recursos de Firebase Functions
+
+═════════════════════════════════════════════════════════════
+
+🚀 CÓMO INICIAR
+
+1. Asegúrate que .env tiene credenciales Twilio:
+   REACT_APP_TWILIO_ACCOUNT_SID=ACb9c05a7fde7fa3ca70c83c6cf6dbf36a
+   REACT_APP_TWILIO_AUTH_TOKEN=760c4b9eedd8dc77646bf12161c7f70e
+   REACT_APP_TWILIO_WHATSAPP_NUMBER=+14155238886
+
+2. Inicia React:
+   npm start
+
+3. Prueba en http://localhost:3000:
+   - Registrate con tu número real (+56912345678)
+   - ✅ Revisa WhatsApp en 5-10 segundos
+
+═════════════════════════════════════════════════════════════
+
+📝 NOTAS
+
+• Las credenciales en .env son LOCALES (no se suben a GitHub)
+• En producción, configurar variables de entorno en tu hosting (Netlify, Vercel, etc.)
+• El navegador hace llamadas DIRECTAS a Twilio API
+• Para máxima seguridad en producción, considera un backend propio
+
+═════════════════════════════════════════════════════════════
+
+✅ TODO LISTO PARA USAR

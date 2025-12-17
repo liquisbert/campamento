@@ -1,0 +1,100 @@
+.schedule-view {
+  display: grid;
+  gap: 30px;
+}
+
+.day-section {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.day-title {
+  color: #667eea;
+  font-size: 22px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #667eea;
+}
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.event-card {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+  transition: all 0.3s ease;
+}
+
+.event-card:hover {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  transform: translateX(5px);
+}
+
+.event-icon {
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+}
+
+.event-content {
+  flex: 1;
+}
+
+.event-content h4 {
+  color: #333;
+  margin: 0 0 8px 0;
+  font-size: 18px;
+}
+
+.event-time {
+  color: #667eea;
+  font-weight: 500;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.event-meal {
+  color: #28a745;
+  font-weight: 500;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.event-description {
+  color: #666;
+  margin: 8px 0 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.no-events {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .event-card {
+    flex-direction: column;
+  }
+
+  .event-icon {
+    font-size: 24px;
+  }
+
+  .day-title {
+    font-size: 18px;
+  }
+}

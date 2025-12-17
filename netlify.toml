@@ -1,0 +1,19 @@
+# Configuración de Netlify
+[build]
+  command = "npm run build"
+  publish = "build"
+  functions = "netlify/functions"
+
+# Redireccionar todas las rutas a index.html (para React Router)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers de seguridad
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"

@@ -1,0 +1,200 @@
+📋 RESUMEN RÁPIDO - DESPLIEGUE A NETLIFY + TWILIO PROD
+
+═════════════════════════════════════════════════════════════════════════════
+
+⚡ 5 PASOS PRINCIPALES (30 MINUTOS)
+
+═════════════════════════════════════════════════════════════════════════════
+
+PASO 1: PREPARAR EL BUILD (2 minutos)
+─────────────────────────────────────
+
+En tu terminal:
+
+  npm run build
+
+✅ Deberías ver: "compiled successfully" y carpeta "build/" creada
+
+
+PASO 2: SUBIR A GITHUB (3 minutos)
+──────────────────────────────────
+
+Verifica que .env NO está en staging:
+
+  git status
+  # NO deberías ver ".env" en la lista
+
+Si .env aparece en la lista:
+
+  git rm --cached .env
+  git add .gitignore
+  git commit -m "Remover .env de git"
+
+Sube a GitHub:
+
+  git add .
+  git commit -m "Preparar para producción"
+  git push origin main
+
+
+PASO 3: CREAR NETLIFY ACCOUNT (3 minutos)
+──────────────────────────────────────────
+
+1. Ve a: https://app.netlify.com/signup
+
+2. Click: "Sign up with GitHub" (es más fácil)
+
+3. Autoriza acceso a GitHub
+
+✅ Ya tienes cuenta en Netlify
+
+
+PASO 4: CONECTAR REPOSITORIO EN NETLIFY (5 minutos)
+────────────────────────────────────────────────────
+
+1. En Netlify Dashboard: "New site from Git"
+
+2. Click: "GitHub"
+
+3. Busca tu repo: "campamento"
+
+4. Click en él
+
+5. Netlify mostrará settings de deploy:
+   
+   ├─ Repository: tu-usuario/campamento
+   ├─ Branch: main
+   ├─ Build command: npm run build
+   └─ Publish directory: build
+
+6. Todo debe estar correcto. Click: "Deploy site"
+
+7. ⏳ Espera 2-3 minutos mientras compila
+
+✅ Tu sitio estará en: https://[nombre-aleatorio].netlify.app
+
+
+PASO 5: CONFIGURAR VARIABLES DE TWILIO EN NETLIFY (5 minutos)
+─────────────────────────────────────────────────────────────
+
+1. En el dashboard de Netlify, click en tu sitio
+
+2. "Site settings" (en la parte superior)
+
+3. Menú izquierdo: "Build & deploy" → "Environment"
+
+4. Click: "Edit variables"
+
+5. Agrega 3 variables (copiar exactamente):
+
+   Variable 1:
+   Name: REACT_APP_TWILIO_ACCOUNT_SID
+   Value: ACb9c05a7fde7fa3ca70c83c6cf6dbf36a
+   Click: Add
+
+   Variable 2:
+   Name: REACT_APP_TWILIO_AUTH_TOKEN
+   Value: 760c4b9eedd8dc77646bf12161c7f70e
+   Click: Add
+
+   Variable 3:
+   Name: REACT_APP_TWILIO_WHATSAPP_NUMBER
+   Value: +14155238886
+   Click: Add
+
+6. Click: "Save"
+
+7. Fuerza redeploy: "Deploys" → "Trigger deploy" → "Deploy site"
+
+8. ⏳ Espera a que termine (2-3 minutos)
+
+✅ Netlify tiene tus credenciales de forma segura
+
+
+PASO 6: CONFIGURAR TWILIO PARA PRODUCCIÓN (2 minutos)
+──────────────────────────────────────────────────────
+
+Tienes 2 opciones:
+
+OPCIÓN A: SANDBOX (Recomendado para MVP - GRATIS)
+───────────────────────────────────────────────────
+
+1. Ve a: https://www.twilio.com/console/sms/whatsapp/sandbox
+
+2. Sección "Participant Numbers"
+
+3. Agrega los números de tus usuarios reales:
+   • Escribe: +56912345678 (formato: +[código país][número])
+   • Click: "Add Number"
+   • Verifica en WhatsApp
+
+4. ✅ Esos números recibirán WhatsApp en producción
+
+LIMITACIONES: Solo 50 números, expiran después de tiempo
+
+
+OPCIÓN B: PRODUCCIÓN (PAGO - Para escala real)
+───────────────────────────────────────────────
+
+1. Ve a: https://www.twilio.com/console
+
+2. Busca: "WhatsApp Business" o "Get Approval"
+
+3. Rellena:
+   • Teléfono real
+   • Nombre del negocio
+   • Política de privacidad
+   • Términos
+
+4. Solicita aprobación (24-48 horas)
+
+5. Una vez aprobado:
+   • Recibes nuevas credenciales
+   • Costo: $0.003-0.01 por mensaje
+   • Actualiza variables en Netlify
+
+RECOMENDACIÓN: Usa OPCIÓN A primero
+
+═════════════════════════════════════════════════════════════════════════════
+
+✅ LISTO PARA PROBAR
+
+Tu sitio estará en: https://[nombre].netlify.app
+
+1. Abre en navegador
+
+2. Click: "Regístrate aquí"
+
+3. Rellena con número que agregaste en Twilio Sandbox
+
+4. ✅ Revisa WhatsApp en 5-10 segundos
+
+═════════════════════════════════════════════════════════════════════════════
+
+🐛 SI ALGO FALLA
+
+❌ Build error en Netlify
+├─ Ve a: Deploys → Click en deploy fallido
+├─ Busca error en "Build log"
+├─ Soluciona localmente: npm run build
+└─ Haz push a GitHub
+
+❌ WhatsApp no llega
+├─ Verifica credenciales en Netlify (Site settings → Environment)
+├─ ¿Tu número está en Sandbox? (https://www.twilio.com/console/sms/whatsapp/sandbox)
+├─ Revisa Twilio logs: https://www.twilio.com/console
+└─ Abre F12 en navegador y busca errores en Console
+
+═════════════════════════════════════════════════════════════════════════════
+
+📞 ENLACES IMPORTANTES
+
+Netlify Dashboard: https://app.netlify.com
+Twilio Console: https://www.twilio.com/console
+Tu Firebase: https://console.firebase.google.com
+
+═════════════════════════════════════════════════════════════════════════════
+
+¡LISTO! Estás en producción 🎉
+
+═════════════════════════════════════════════════════════════════════════════

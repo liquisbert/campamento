@@ -1,0 +1,112 @@
+🚀 COMANDOS PARA DESPLIEGUE (COPY-PASTE)
+
+═════════════════════════════════════════════════════════════════════════════
+
+PASO 1: CONSTRUIR LOCALMENTE
+═════════════════════════════════════════════════════════════════════════════
+
+npm run build
+
+
+PASO 2: VERIFICAR .gitignore
+═════════════════════════════════════════════════════════════════════════════
+
+git status
+
+# Revisa que NO veas ".env" en la lista
+
+
+PASO 3: SI .env APARECE EN GIT (SOLO SI NO LO HICISTE ANTES)
+═════════════════════════════════════════════════════════════════════════════
+
+git rm --cached .env
+git add .gitignore
+git commit -m "Remover .env de git tracking"
+
+
+PASO 4: SUBIR A GITHUB
+═════════════════════════════════════════════════════════════════════════════
+
+git add .
+git commit -m "Preparar despliegue a Netlify"
+git push origin main
+
+
+PASO 5: CREAR NETLIFY ACCOUNT
+═════════════════════════════════════════════════════════════════════════════
+
+https://app.netlify.com/signup
+
+
+PASO 6: EN NETLIFY DASHBOARD
+═════════════════════════════════════════════════════════════════════════════
+
+1. "New site from Git"
+2. GitHub
+3. Busca "campamento"
+4. Click en repo
+5. Verifica settings:
+   - Build command: npm run build
+   - Publish: build
+6. Click "Deploy site"
+
+
+PASO 7: ESPERAR DEPLOY (2-3 MINUTOS)
+═════════════════════════════════════════════════════════════════════════════
+
+Netlify empezará a compilar. Tu sitio estará en:
+https://[nombre-random].netlify.app
+
+
+PASO 8: CONFIGURAR VARIABLES EN NETLIFY
+═════════════════════════════════════════════════════════════════════════════
+
+EN NETLIFY:
+1. Site settings
+2. Build & deploy → Environment
+3. Edit variables
+4. Agrega:
+
+Variable 1:
+Name: REACT_APP_TWILIO_ACCOUNT_SID
+Value: ACb9c05a7fde7fa3ca70c83c6cf6dbf36a
+
+Variable 2:
+Name: REACT_APP_TWILIO_AUTH_TOKEN
+Value: 760c4b9eedd8dc77646bf12161c7f70e
+
+Variable 3:
+Name: REACT_APP_TWILIO_WHATSAPP_NUMBER
+Value: +14155238886
+
+5. Save
+
+
+PASO 9: TRIGGER REDEPLOY
+═════════════════════════════════════════════════════════════════════════════
+
+EN NETLIFY:
+1. Deploys
+2. Trigger deploy
+3. Deploy site
+
+
+PASO 10: CONFIGURAR TWILIO SANDBOX
+═════════════════════════════════════════════════════════════════════════════
+
+https://www.twilio.com/console/sms/whatsapp/sandbox
+
+1. "Participant Numbers"
+2. Agrega tu número: +56912345678 (reemplaza con tu número real)
+3. Verifica en WhatsApp (escribe al número Twilio)
+
+
+═════════════════════════════════════════════════════════════════════════════
+
+✅ LISTO
+
+Prueba en: https://[nombre].netlify.app
+
+Regístrate y verifica WhatsApp
+
+═════════════════════════════════════════════════════════════════════════════

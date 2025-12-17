@@ -1,0 +1,122 @@
+🔧 REFERENCIA RÁPIDA - COMANDOS
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ INSTALAR FIREBASE CLI (si no tienes)
+
+npm install -g firebase-tools
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ LOGIN EN FIREBASE
+
+firebase login
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ SELECCIONAR PROYECTO
+
+firebase use --add
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ OPCIÓN A: SOLO EMAIL (copy-paste)
+
+firebase functions:config:set \
+  gmail.email="tu-email@gmail.com" \
+  gmail.password="tu-app-password-16-chars"
+
+firebase deploy --only functions
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ OPCIÓN B: EMAIL + WHATSAPP (copy-paste)
+
+firebase functions:config:set \
+  gmail.email="tu-email@gmail.com" \
+  gmail.password="tu-app-password-16-chars" \
+  twilio.account_sid="ACxxxxxxxx" \
+  twilio.auth_token="xxxxxxxx" \
+  twilio.whatsapp_number="+1415238886"
+
+firebase deploy --only functions
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ VERIFICAR CONFIGURACIÓN
+
+firebase functions:config:get
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ VER LOGS EN TIEMPO REAL
+
+firebase functions:log --lines=50
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ DESPLEGAR CON DETALLES (si hay error)
+
+firebase deploy --only functions --verbose
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ PROBAR LA APLICACIÓN
+
+Abre: http://localhost:3000
+Click: "Regístrate aquí"
+Rellena: Email, Nombre, Teléfono (opcional), Contraseña
+Click: "Registrarse"
+Revisa: Tu email (incluido SPAM) + WhatsApp (si configuraste)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❓ NO LLEGA EMAIL
+
+firebase functions:log
+# Busca errores
+
+Revisa carpeta SPAM en Gmail
+
+Verifica credenciales:
+firebase functions:config:get
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❓ NO LLEGA WHATSAPP
+
+Verifica número: +56912345678 (con +)
+
+En Twilio Console, agrega tu número al sandbox
+
+Comprueba credenciales:
+firebase functions:config:get
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❓ ERROR AL DESPLEGAR
+
+firebase logout
+firebase login
+firebase use --add
+firebase deploy --only functions --verbose
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 DÓNDE OBTENER CREDENCIALES
+
+Gmail:
+  https://myaccount.google.com
+  → Seguridad
+  → Contraseñas de aplicación
+  → Copia contraseña 16 caracteres
+
+Twilio (opcional):
+  https://www.twilio.com/console
+  → Account SID y Auth Token
+  → WhatsApp Sandbox
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 PARA MÁS DETALLES: Lee NOTIFICACIONES.md
+
