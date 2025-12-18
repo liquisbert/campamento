@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 
 const QRScanner = ({ onScan, onError }) => {
-  const [isScanning, setIsScanning] = useState(false);
+  const [isScanning, setIsScanning] = useState(true); // Inicia automáticamente
 
   useEffect(() => {
     if (!isScanning) return;
@@ -35,23 +35,23 @@ const QRScanner = ({ onScan, onError }) => {
 
   return (
     <div className="qr-scanner">
-      {!isScanning ? (
-        <button 
-          className="btn btn-primary"
-          onClick={() => setIsScanning(true)}
-        >
-          🎥 Iniciar Scanner QR
-        </button>
-      ) : (
-        <>
+      {isScanning ? (
+        <div className="scanner-active">
           <div id="qr-reader" style={{ width: '100%' }}></div>
           <button 
-            className="btn btn-danger"
+            className="btn btn-danger btn-stop"
             onClick={() => setIsScanning(false)}
           >
             ❌ Detener Scanner
           </button>
-        </>
+        </div>
+      ) : (
+        <button 
+          className="btn btn-primary btn-start"
+          onClick={() => setIsScanning(true)}
+        >
+          🎥 Reanudar Scanner
+        </button>
       )}
     </div>
   );

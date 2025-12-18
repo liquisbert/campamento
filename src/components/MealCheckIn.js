@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import QRScanner from './QRScanner';
+import Toast from './Toast';
 import { getUserByQRId, registerMealCheckIn } from '../firebase/auth';
 import './MealCheckIn.css';
 
 const MealCheckIn = () => {
   const [mealType, setMealType] = useState('breakfast');
   const [scannedUser, setScannedUser] = useState(null);
-  const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState('');
-
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState('success');
   const handleScan = async (qrId) => {
     try {
       const user = await getUserByQRId(qrId);
@@ -18,20 +19,27 @@ const MealCheckIn = () => {
         // Registrar el check-in
         await registerMealCheckIn(user.uid, mealType);
         
-        setMessageType('success');
-        setMessage(`✅ ${user.name} registrado para ${getMealLabel(mealType)}`);
+        setToastType('success');
+        setToastMessage(`Registrado para ${getMealLabel(mealType)}`);
+        setToastName(user.name);
+        setShowToast(true);
         
         setTimeout(() => {
           setScannedUser(null);
-          setMessage('');
-        }, 3000);
+        }, 2000);
       } else {
-        setMessageType('error');
-        setMessage('❌ Código QR no encontrado');
+        setToastType('error');
+        setToastMessage('Código QR no encontrado');
+        setToastName('');
+        setShowToast(true);
       }
     } catch (error) {
-      setMessageType('error');
-      setMessage('❌ Error al registrar: ' + error.message);
+      setToastType('error');
+      setToastMessage('Error al registrar: ' + error.message);
+      setToastName('');
+      setShowToast(true);
+    }
+  };  setMessage('❌ Error al registrar: ' + error.message);
     }
   };
 
@@ -46,6 +54,15 @@ const MealCheckIn = () => {
 
   return (
     <div className="meal-checkin">
+      {showToast && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          participantName={toastName}
+          onClose={() => setShowToast(false)}
+        />
+      )}
+
       <div className="checkin-config">
         <div className="form-group">
           <label>Seleccionar Comida</label>
@@ -61,16 +78,10 @@ const MealCheckIn = () => {
         </div>
       </div>
 
-      {message && (
-        <div className={`alert alert-${messageType}`}>
-          {message}
-        </div>
-      )}
-
       {scannedUser && (
         <div className="checkin-result">
           <div className="result-card">
-            <h3>Participante Registrado</h3>
+            <h3>✅ Participante Registrado</h3>
             <p><strong>Nombre:</strong> {scannedUser.name}</p>
             <p><strong>Email:</strong> {scannedUser.email}</p>
             <p><strong>Comida:</strong> {getMealLabel(mealType)}</p>
@@ -82,7 +93,7 @@ const MealCheckIn = () => {
       )}
 
       <div className="scanner-section">
-        <h3>Escanear QR</h3>
+        <h3>📱 Escanear QR</h3>
         <QRScanner onScan={handleScan} />
       </div>
 

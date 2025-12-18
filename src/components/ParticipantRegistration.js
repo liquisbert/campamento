@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { registerUser } from '../firebase/auth';
+import Toast from './Toast';
 import './Auth.css';
 
 const ParticipantRegistration = ({ onClose }) => {
@@ -11,7 +12,8 @@ const ParticipantRegistration = ({ onClose }) => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
+  const [showToast, setShowToast] = useState(false);
+  const [toastName, setToastName] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +33,6 @@ const ParticipantRegistration = ({ onClose }) => {
       const password = formData.password || Math.random().toString(36).slice(-8);
 
       // Registrar usuario (esto ya envía WhatsApp en auth.js)
-      // Registrar usuario (esto ya envía WhatsApp en auth.js)
       await registerUser(
         formData.email,
         password,
@@ -39,9 +40,10 @@ const ParticipantRegistration = ({ onClose }) => {
         formData.phoneNumber,
         'participant'
       );
-      // Si llegamos aquí, el registro fue exitoso
-      // El WhatsApp ya se envió automáticamente en registerUser()
-      setSuccess(`✅ Participante "${formData.name}" registrado correctamente. ¡WhatsApp enviado!`);
+
+      // Mostrar toast de éxito
+      setToastName(formData.name);
+      setShowToast(true);
 
       // Limpiar formulario
       setFormData({
@@ -51,10 +53,10 @@ const ParticipantRegistration = ({ onClose }) => {
         phoneNumber: ''
       });
 
-      // Cerrar después de 3 segundos
+      // Cerrar después de 2 segundos
       setTimeout(() => {
         if (onClose) onClose();
-      }, 3000);
+      }, 2000);
     } catch (err) {
       setError(err.message || 'Error al registrar participante');
     } finally {
@@ -64,15 +66,32 @@ const ParticipantRegistration = ({ onClose }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
+      {showToast && (
+        <Toast
+          message="Participante registrado correctamente. ¡WhatsApp enviado!"
+          type="success"
+          participantName={toastName}
+          onClose={() => setShowToast(false)}
+        />
+      )}
+
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Registrar Nuevo Participante</h2>
           <button className="close-btn" onClick={onClose}>✕</button>
         </div>
 
+        {loading && (
+          <div className="loader-overlay">
+            <div className="loader">
+              <div className="spinner"></div>
+              <p>Registrando participante...</p>
+            </div>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="registration-form">
           {error && <div className="alert alert-error">{error}</div>}
-          {success && <div className="alert alert-success">{success}</div>}
 
           <div className="form-group">
             <label>Nombre Completo *</label>
@@ -83,6 +102,7 @@ const ParticipantRegistration = ({ onClose }) => {
               onChange={handleChange}
               required
               placeholder="Juan Pérez"
+              disabled={loading}
             />
           </div>
 
@@ -95,6 +115,7 @@ const ParticipantRegistration = ({ onClose }) => {
               onChange={handleChange}
               required
               placeholder="juan@example.com"
+              disabled={loading}
             />
           </div>
 
@@ -107,6 +128,7 @@ const ParticipantRegistration = ({ onClose }) => {
               onChange={handleChange}
               required
               placeholder="+56912345678"
+              disabled={loading}
             />
           </div>
 
@@ -118,11 +140,12 @@ const ParticipantRegistration = ({ onClose }) => {
               value={formData.password}
               onChange={handleChange}
               placeholder="Dejar vacío para generar automáticamente"
+              disabled={loading}
             />
           </div>
 
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? 'Registrando...' : 'Registrar Participante'}
+            {loading ? '⏳ Registrando...' : '✅ Registrar Participante'}
           </button>
         </form>
       </div>
