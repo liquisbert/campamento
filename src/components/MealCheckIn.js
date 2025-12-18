@@ -10,6 +10,7 @@ const MealCheckIn = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState('success');
+  const [toastName, setToastName] = useState('');
   const handleScan = async (qrId) => {
     try {
       const user = await getUserByQRId(qrId);
@@ -38,8 +39,6 @@ const MealCheckIn = () => {
       setToastMessage('Error al registrar: ' + error.message);
       setToastName('');
       setShowToast(true);
-    }
-  };  setMessage('❌ Error al registrar: ' + error.message);
     }
   };
 
