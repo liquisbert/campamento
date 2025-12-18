@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getCurrentUserData, logoutUser, getAllUsers, updateUserRole } from '../firebase/auth';
 import { getScheduleEvents, createScheduleEvent, updateScheduleEvent, deleteScheduleEvent } from '../firebase/schedule';
+import Sidebar from './Sidebar';
 import ScheduleEditor from './ScheduleEditor';
 import UserManagement from './UserManagement';
 import MealCheckIn from './MealCheckIn';
@@ -16,6 +17,7 @@ const StaffDashboard = ({ currentUser }) => {
   const [loading, setLoading] = useState(true);
   const [showRegistration, setShowRegistration] = useState(false);
   const navigate = useNavigate();
+  const toggleSidebarRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +53,10 @@ const StaffDashboard = ({ currentUser }) => {
     } catch (error) {
       console.error('Error logging out:', error);
     }
+  };
+
+  const handleToggleSidebar = () => {
+    toggleSidebarRef.current?.();
   };
 
   const handleAddEvent = async (event) => {
@@ -100,6 +106,12 @@ const StaffDashboard = ({ currentUser }) => {
     }
   };
 
+  const menuItems = [
+    { id: 'qr-scanner', label: 'Scanner QR', icon: '📱' },
+    { id: 'schedule', label: 'Cronograma', icon: '📅' },
+    { id: 'users', label: 'Usuarios', icon: '👥', badge: allUsers.length }
+  ];
+
   if (loading) {
     return (
       <div className="loading">
@@ -111,48 +123,29 @@ const StaffDashboard = ({ currentUser }) => {
 
   return (
     <div className="dashboard">
+      <Sidebar
+        userData={userData}
+        onLogout={handleLogout}
+        menuItems={menuItems}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onToggleRef={toggleSidebarRef}
+      />
+
       <nav className="navbar">
+        <button 
+          className="navbar-toggle" 
+          onClick={handleToggleSidebar}
+          aria-label="Toggle sidebar"
+        >
+          ☰
+        </button>
         <div className="navbar-brand">
           <h2>🏕️ Campamento App - Staff</h2>
-        </div>
-        <div className="user-info">
-          <span>👤 {userData?.name}</span>
-          <button className="btn btn-secondary" onClick={handleLogout}>
-            Cerrar Sesión
-          </button>
         </div>
       </nav>
 
       <div className="container">
-        <div className="dashboard-tabs">
-          <button
-            className={`tab-btn ${activeTab === 'qr-scanner' ? 'active' : ''}`}
-            onClick={() => setActiveTab('qr-scanner')}
-          >
-            📱 Scanner QR
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'schedule' ? 'active' : ''}`}
-            onClick={() => setActiveTab('schedule')}
-          >
-            📅 Cronograma
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'users' ? 'active' : ''}`}
-            onClick={() => setActiveTab('users')}
-          >
-            👥 Usuarios ({allUsers.length})
-          </button>
-
-          <button
-            className="tab-btn btn-add"
-            onClick={() => setShowRegistration(true)}
-            style={{ marginLeft: 'auto', backgroundColor: '#28a745', color: 'white' }}
-          >
-            ➕ Registrar Participante
-          </button>
-        </div>
-
         {activeTab === 'qr-scanner' && (
           <div className="tab-content">
             <h2>Scanner de QR - Registro de Comidas</h2>
@@ -186,7 +179,6 @@ const StaffDashboard = ({ currentUser }) => {
           <ParticipantRegistration 
             onClose={() => {
               setShowRegistration(false);
-              // Recargar usuarios
               const fetchUsers = async () => {
                 const users = await getAllUsers();
                 setAllUsers(users);

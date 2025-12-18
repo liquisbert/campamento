@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getCurrentUserData, logoutUser } from '../firebase/auth';
 import { getScheduleEvents } from '../firebase/schedule';
+import Sidebar from './Sidebar'; // eslint-disable-line no-unused-vars
 import QRDisplay from './QRDisplay';
 import ScheduleView from './ScheduleView';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +13,7 @@ const ParticipantDashboard = ({ currentUser }) => {
   const [activeTab, setActiveTab] = useState('schedule');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const toggleSidebarRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +44,16 @@ const ParticipantDashboard = ({ currentUser }) => {
     }
   };
 
+  const handleToggleSidebar = () => {
+    toggleSidebarRef.current?.();
+  };
+
+  const menuItems = [ // eslint-disable-line no-unused-vars
+    { id: 'schedule', label: 'Cronograma', icon: '📅' },
+    { id: 'qr', label: 'Mi QR', icon: '📱' },
+    { id: 'checkins', label: 'Mis Check-ins', icon: '✅' }
+  ];
+
   if (loading) {
     return (
       <div className="loading">
@@ -53,40 +65,29 @@ const ParticipantDashboard = ({ currentUser }) => {
 
   return (
     <div className="dashboard">
+      <Sidebar
+        userData={userData}
+        onLogout={handleLogout}
+        menuItems={menuItems}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onToggleRef={toggleSidebarRef}
+      />
+
       <nav className="navbar">
+        <button 
+          className="navbar-toggle" 
+          onClick={handleToggleSidebar}
+          aria-label="Toggle sidebar"
+        >
+          ☰
+        </button>
         <div className="navbar-brand">
           <h2>🏕️ Campamento App</h2>
-        </div>
-        <div className="user-info">
-          <span>{userData?.name}</span>
-          <button className="btn btn-secondary" onClick={handleLogout}>
-            Cerrar Sesión
-          </button>
         </div>
       </nav>
 
       <div className="container">
-        <div className="dashboard-tabs">
-          <button
-            className={`tab-btn ${activeTab === 'schedule' ? 'active' : ''}`}
-            onClick={() => setActiveTab('schedule')}
-          >
-            📅 Cronograma
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'qr' ? 'active' : ''}`}
-            onClick={() => setActiveTab('qr')}
-          >
-            📱 Mi QR
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'checkins' ? 'active' : ''}`}
-            onClick={() => setActiveTab('checkins')}
-          >
-            ✅ Mis Check-ins
-          </button>
-        </div>
-
         {activeTab === 'schedule' && (
           <div className="tab-content">
             <h2>Cronograma del Campamento</h2>
