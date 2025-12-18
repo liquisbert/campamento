@@ -68,21 +68,7 @@ const Sidebar = ({ userData, onLogout, menuItems, activeTab, onTabChange, onTogg
       {/* Sidebar */}
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         {/* Header con logo y cerrar */}
-        <div className="sidebar-header">
-          <div className="sidebar-brand">
-            <h1>🏕️</h1>
-            <span className="brand-text">Campamento</span>
-          </div>
-          {isMobile && (
-            <button 
-              className="close-sidebar-btn" 
-              onClick={() => setIsOpen(false)}
-              aria-label="Close sidebar"
-            >
-              ✕
-            </button>
-          )}
-        </div>
+        
 
         {/* Divider */}
         <div className="sidebar-divider"></div>
@@ -91,7 +77,7 @@ const Sidebar = ({ userData, onLogout, menuItems, activeTab, onTabChange, onTogg
         <div className="sidebar-user-section">
           <div className="user-avatar-container">
             <div className="user-avatar">
-              {userData?.name ? userData.name.charAt(0).toUpperCase() : '👤'}
+              {userData?.name ?? '👤'}
             </div>
           </div>
           <div className="user-details">

@@ -137,13 +137,13 @@ code {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 5px;
+  /* border-radius: 5px; */
 }
 
 .navbar a {
   color: white;
   text-decoration: none;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   transition: color 0.3s ease;
 }
 
