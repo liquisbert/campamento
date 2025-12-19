@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 
 const StaffDashboard = ({ currentUser }) => {
+  console.log('=== StaffDashboard COMPONENT MOUNTED ===', currentUser);
   const [userData, setUserData] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
   const [scheduleEvents, setScheduleEvents] = useState([]);
@@ -57,8 +58,14 @@ const StaffDashboard = ({ currentUser }) => {
   };
 
   const handleToggleSidebar = () => {
-    setSidebarOpen(prev => !prev);
+    console.log('Toggle sidebar clicked, current state:', sidebarOpen);
+    setSidebarOpen(prev => {
+      console.log('Setting sidebar state from', prev, 'to', !prev);
+      return !prev;
+    });
   };
+
+  console.log('StaffDashboard rendering with sidebarOpen:', sidebarOpen);
 
   const handleAddEvent = async (event) => {
     try {
@@ -138,7 +145,10 @@ const StaffDashboard = ({ currentUser }) => {
       <nav className="navbar">
         <button 
           className="navbar-toggle" 
-          onClick={handleToggleSidebar}
+          onClick={(e) => {
+            console.log('Button click event:', e);
+            handleToggleSidebar();
+          }}
           aria-label="Toggle sidebar"
         >
           ☰

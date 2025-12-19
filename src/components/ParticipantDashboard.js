@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getCurrentUserData, logoutUser } from '../firebase/auth';
 import { getScheduleEvents } from '../firebase/schedule';
 import Sidebar from './Sidebar'; // eslint-disable-line no-unused-vars
@@ -12,8 +12,8 @@ const ParticipantDashboard = ({ currentUser }) => {
   const [scheduleEvents, setScheduleEvents] = useState([]);
   const [activeTab, setActiveTab] = useState('schedule');
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
-  const toggleSidebarRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +45,7 @@ const ParticipantDashboard = ({ currentUser }) => {
   };
 
   const handleToggleSidebar = () => {
-    toggleSidebarRef.current?.();
+    setSidebarOpen(prev => !prev);
   };
 
   const menuItems = [ // eslint-disable-line no-unused-vars
@@ -71,7 +71,8 @@ const ParticipantDashboard = ({ currentUser }) => {
         menuItems={menuItems}
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        onToggleRef={toggleSidebarRef}
+        isOpen={sidebarOpen}
+        onOpenChange={setSidebarOpen}
       />
 
       <nav className="navbar">
