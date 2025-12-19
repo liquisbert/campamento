@@ -127,7 +127,7 @@ const ParticipantRegistration = ({ onClose }) => {
               value={formData.phoneNumber}
               onChange={handleChange}
               required
-              placeholder="+56912345678"
+              placeholder="78567887"
               disabled={loading}
             />
           </div>

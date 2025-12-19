@@ -98,7 +98,7 @@ const Register = () => {
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
-              placeholder="+56912345678"
+              placeholder="78567887"
             />
           </div>
 
