@@ -21,19 +21,13 @@
    HAMBURGER BUTTON
    =================================== */
 
-.hamburger-btn {
-  display: none;
-}
+/* Hamburger button handled by navbar, not rendered by Sidebar */
 
 /* ===================================
-   MOBILE: Display hamburger at max-width 768px
+   MOBILE: Adjust sidebar for mobile at max-width 768px
    =================================== */
 
 @media (max-width: 768px) {
-  .hamburger-btn {
-    display: none;
-  }
-
   .sidebar {
     position: fixed;
     left: 0;

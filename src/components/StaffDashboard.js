@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 import ScheduleEditor from './ScheduleEditor';
 import UserManagement from './UserManagement';
 import MealCheckIn from './MealCheckIn';
+import MealCheckInAttendance from './MealCheckInAttendance';
 import ParticipantRegistration from './ParticipantRegistration';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
@@ -16,8 +17,8 @@ const StaffDashboard = ({ currentUser }) => {
   const [activeTab, setActiveTab] = useState('qr-scanner');
   const [loading, setLoading] = useState(true);
   const [showRegistration, setShowRegistration] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
-  const toggleSidebarRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,7 +57,7 @@ const StaffDashboard = ({ currentUser }) => {
   };
 
   const handleToggleSidebar = () => {
-    toggleSidebarRef.current?.();
+    setSidebarOpen(prev => !prev);
   };
 
   const handleAddEvent = async (event) => {
@@ -108,6 +109,7 @@ const StaffDashboard = ({ currentUser }) => {
 
   const menuItems = [
     { id: 'qr-scanner', label: 'Scanner QR', icon: '📱' },
+    { id: 'attendance', label: 'Asistencia', icon: '📊' },
     { id: 'schedule', label: 'Cronograma', icon: '📅' },
     { id: 'users', label: 'Usuarios', icon: '👥', badge: allUsers.length }
   ];
@@ -129,7 +131,8 @@ const StaffDashboard = ({ currentUser }) => {
         menuItems={menuItems}
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        onToggleRef={toggleSidebarRef}
+        isOpen={sidebarOpen}
+        onOpenChange={setSidebarOpen}
       />
 
       <nav className="navbar">
@@ -148,8 +151,15 @@ const StaffDashboard = ({ currentUser }) => {
       <div className="container">
         {activeTab === 'qr-scanner' && (
           <div className="tab-content">
-            <h2>Scanner de QR - Registro de Comidas</h2>
+            <h2>Scanner QR</h2>
             <MealCheckIn />
+          </div>
+        )}
+
+        {activeTab === 'attendance' && (
+          <div className="tab-content">
+            <h2>📊 Asistencia a eventos</h2>
+            <MealCheckInAttendance />
           </div>
         )}
 

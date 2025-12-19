@@ -1,15 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
+import './QRScanner.css';
 
-const QRScanner = ({ onScan, onError }) => {
-  const [isScanning, setIsScanning] = useState(true); // Inicia automáticamente
+const QRScanner = ({ onScan, onError, disabled = false }) => {
+  const [isScanning, setIsScanning] = useState(true);
+
+  // Calcula el tamaño del qrbox según la pantalla
+  const getQrBoxSize = () => {
+    const width = window.innerWidth;
+    if (width < 480) {
+      return { width: 200, height: 200 };
+    } else if (width < 768) {
+      return { width: 220, height: 220 };
+    } else {
+      return { width: 250, height: 250 };
+    }
+  };
 
   useEffect(() => {
-    if (!isScanning) return;
+    if (!isScanning || disabled) return;
 
+    const qrbox = getQrBoxSize();
     const scanner = new Html5QrcodeScanner(
       'qr-reader',
-      { fps: 10, qrbox: { width: 250, height: 250 } },
+      { 
+        fps: 10, 
+        qrbox: qrbox,
+        aspectRatio: 1.0,
+        disableFlip: false
+      },
       false
     );
 
@@ -31,16 +50,17 @@ const QRScanner = ({ onScan, onError }) => {
     return () => {
       scanner.clear().catch((err) => console.error('Error clearing scanner:', err));
     };
-  }, [isScanning, onScan, onError]);
+  }, [isScanning, onScan, onError, disabled]);
 
   return (
-    <div className="qr-scanner">
-      {isScanning ? (
+    <div className={`qr-scanner ${disabled ? 'disabled' : ''}`}>
+      {isScanning && !disabled ? (
         <div className="scanner-active">
           <div id="qr-reader" style={{ width: '100%' }}></div>
           <button 
             className="btn btn-danger btn-stop"
             onClick={() => setIsScanning(false)}
+            disabled={disabled}
           >
             ❌ Detener Scanner
           </button>
@@ -48,9 +68,10 @@ const QRScanner = ({ onScan, onError }) => {
       ) : (
         <button 
           className="btn btn-primary btn-start"
-          onClick={() => setIsScanning(true)}
+          onClick={() => !disabled && setIsScanning(true)}
+          disabled={disabled}
         >
-          🎥 Reanudar Scanner
+          {disabled ? '🔒 Scanner Deshabilitado' : '🎥 Reanudar Scanner'}
         </button>
       )}
     </div>

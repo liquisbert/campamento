@@ -1,20 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Sidebar.css';
 
-const Sidebar = ({ userData, onLogout, menuItems, activeTab, onTabChange, onToggleRef }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Sidebar = ({ userData, onLogout, menuItems, activeTab, onTabChange, isOpen, onOpenChange }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-  const toggleSidebar = useCallback(() => {
-    setIsOpen(prev => !prev);
-  }, []);
-
-  // Exponer el método toggleSidebar mediante ref
-  useEffect(() => {
-    if (onToggleRef) {
-      onToggleRef.current = toggleSidebar;
-    }
-  }, [onToggleRef, toggleSidebar]);
 
   // Detectar cambios de tamaño de pantalla
   useEffect(() => {
@@ -22,45 +10,34 @@ const Sidebar = ({ userData, onLogout, menuItems, activeTab, onTabChange, onTogg
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
       // Cerrar sidebar automáticamente en desktop
-      if (!mobile) {
-        setIsOpen(false);
+      if (!mobile && isOpen) {
+        onOpenChange(false);
       }
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [isOpen, onOpenChange]);
 
   const handleTabClick = (tabId) => {
     onTabChange(tabId);
     if (isMobile) {
-      setIsOpen(false);
+      onOpenChange(false);
     }
   };
 
   const handleLogoutClick = async () => {
-    setIsOpen(false);
+    onOpenChange(false);
     await onLogout();
   };
 
   return (
     <>
-      {/* Hamburger Button */}
-      <button 
-        className={`hamburger-btn ${isOpen ? 'active' : ''}`} 
-        onClick={toggleSidebar}
-        aria-label="Toggle menu"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
       {/* Overlay para cerrar sidebar en mobile */}
       {isOpen && isMobile && (
         <div 
           className="sidebar-overlay" 
-          onClick={() => setIsOpen(false)}
+          onClick={() => onOpenChange(false)}
           aria-hidden="true"
         ></div>
       )}

@@ -67,7 +67,7 @@ const ScheduleEditor = ({ events, onAdd, onUpdate, onDelete }) => {
           className="btn btn-success"
           onClick={() => setShowForm(!showForm)}
         >
-          {showForm ? '❌ Cancelar' : '➕ Agregar Evento'}
+          {showForm ? 'Cancelar' : 'Agregar Evento'}
         </button>
       </div>
 
@@ -91,9 +91,10 @@ const ScheduleEditor = ({ events, onAdd, onUpdate, onDelete }) => {
               <div className="form-group">
                 <label>Día *</label>
                 <select name="day" value={formData.day} onChange={handleChange} required>
-                  <option value="Día 1">Día 1</option>
-                  <option value="Día 2">Día 2</option>
-                  <option value="Día 3">Día 3</option>
+                  <option value="Día 1">Sábado</option>
+                  <option value="Día 2">Domingo</option>
+                  <option value="Día 3">Lunes</option>
+                  <option value="Día 3">Martes</option>
                 </select>
               </div>
             </div>
@@ -131,24 +132,14 @@ const ScheduleEditor = ({ events, onAdd, onUpdate, onDelete }) => {
                   required
                 />
               </div>
-
-              <div className="form-group">
-                <label>Tipo de Comida</label>
-                <select name="mealType" value={formData.mealType} onChange={handleChange}>
-                  <option value="">Sin comida</option>
-                  <option value="breakfast">🥐 Desayuno</option>
-                  <option value="lunch">🍽️ Almuerzo</option>
-                  <option value="dinner">🍽️ Cena</option>
-                </select>
-              </div>
             </div>
 
             <div className="form-actions">
               <button type="submit" className="btn btn-primary">
-                {editingId ? '💾 Actualizar' : '✅ Crear Evento'}
+                {editingId ? 'Actualizar' : 'Crear Evento'}
               </button>
               <button type="button" className="btn btn-secondary" onClick={handleCancel}>
-                ❌ Cancelar
+                Cancelar
               </button>
             </div>
           </form>
@@ -157,49 +148,7 @@ const ScheduleEditor = ({ events, onAdd, onUpdate, onDelete }) => {
 
       <div className="schedule-list">
         <h3>Cronograma Actual</h3>
-        <ScheduleView events={events} isStaff={true} />
-        
-        {events.length > 0 && (
-          <div className="events-management">
-            <table className="events-table">
-              <thead>
-                <tr>
-                  <th>Título</th>
-                  <th>Día</th>
-                  <th>Hora</th>
-                  <th>Tipo</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {events.map(event => (
-                  <tr key={event.id}>
-                    <td>{event.title}</td>
-                    <td>{event.day}</td>
-                    <td>{event.startTime} - {event.endTime}</td>
-                    <td>{event.mealType ? '🍴' : '📅'}</td>
-                    <td className="actions">
-                      <button 
-                        className="btn-small btn-edit"
-                        onClick={() => handleEdit(event)}
-                        title="Editar"
-                      >
-                        ✏️
-                      </button>
-                      <button 
-                        className="btn-small btn-delete"
-                        onClick={() => onDelete(event.id)}
-                        title="Eliminar"
-                      >
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        <ScheduleView events={events} isStaff={true} onEventsUpdate={onUpdate} />
       </div>
     </div>
   );

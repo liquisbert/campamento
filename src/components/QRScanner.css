@@ -1,0 +1,51 @@
+/* QR Scanner Responsive Styles */
+
+#qr-reader {
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+}
+
+#qr-reader > div {
+  width: 100% !important;
+}
+
+#qr-reader video {
+  width: 100% !important;
+  max-height: 400px;
+  border-radius: 8px;
+}
+
+.html5-qrcode-element {
+  width: 100%;
+}
+
+.qr-shaded-region {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Mobile Responsive - Tablets and below (768px) */
+@media (max-width: 768px) {
+  #qr-reader video {
+    max-height: 350px;
+  }
+
+  #qr-reader {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+}
+
+/* Extra small devices - Phones (480px and below) */
+@media (max-width: 480px) {
+  #qr-reader video {
+    max-height: 280px;
+  }
+
+  #qr-reader {
+    border-radius: 6px;
+    overflow: hidden;
+  }
+}

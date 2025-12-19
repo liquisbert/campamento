@@ -37,9 +37,16 @@ const UserManagement = ({ users, onUpdateRole }) => {
       {selectedUser && (
         <div className="user-detail-modal">
           <div className="modal-content">
-            <button className="close-btn" onClick={() => setSelectedUser(null)}>✕</button>
             <h2>{selectedUser.name}</h2>
-            <QRDisplay userData={selectedUser} />
+            <button 
+              className="close-btn"
+              onClick={() => setSelectedUser(null)}
+            >
+              ✕
+            </button>
+            <div className="modal-body">
+              <QRDisplay userData={selectedUser} />
+            </div>
           </div>
         </div>
       )}
@@ -49,11 +56,7 @@ const UserManagement = ({ users, onUpdateRole }) => {
           <thead>
             <tr>
               <th>Nombre</th>
-              <th>Email</th>
               <th>Rol</th>
-              <th>Desayunos</th>
-              <th>Almuerzos</th>
-              <th>Cenas</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -62,15 +65,11 @@ const UserManagement = ({ users, onUpdateRole }) => {
               filteredUsers.map(user => (
                 <tr key={user.uid} className={`user-row role-${user.role}`}>
                   <td className="user-name">{user.name}</td>
-                  <td className="user-email">{user.email}</td>
                   <td className="user-role">
                     <span className={`role-badge role-${user.role}`}>
                       {user.role === 'staff' ? '👨‍💼 Personal' : '👤 Participante'}
                     </span>
                   </td>
-                  <td className="meal-count">{user.mealCheckIns?.breakfast?.length || 0}</td>
-                  <td className="meal-count">{user.mealCheckIns?.lunch?.length || 0}</td>
-                  <td className="meal-count">{user.mealCheckIns?.dinner?.length || 0}</td>
                   <td className="actions">
                     <button 
                       className="btn-action btn-view"
@@ -101,7 +100,7 @@ const UserManagement = ({ users, onUpdateRole }) => {
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="no-users">No hay usuarios con este rol</td>
+                <td colSpan="3" className="no-users">No hay usuarios con este rol</td>
               </tr>
             )}
           </tbody>
