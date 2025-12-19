@@ -62,7 +62,7 @@ const QRScanner = ({ onScan, onError, disabled = false }) => {
             onClick={() => setIsScanning(false)}
             disabled={disabled}
           >
-            ❌ Detener Scanner
+            Detener Scanner
           </button>
         </div>
       ) : (

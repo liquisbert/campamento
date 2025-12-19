@@ -301,8 +301,9 @@
 #qr-reader {
   border-radius: 12px;
   overflow: hidden;
-  background: #000;
+  background: #999;
   margin-bottom: 12px;
+  height: 400px;
 }
 
 #qr-reader-stop-button {
@@ -330,6 +331,7 @@
 /* QR Scanner Styling */
 .qr-scanner {
   width: 100%;
+  height: 100%;
 }
 
 .qr-scanner.disabled {

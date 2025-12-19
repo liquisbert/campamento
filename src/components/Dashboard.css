@@ -781,10 +781,6 @@
     flex-direction: column;
   }
 
-  .sidebar {
-    display: none;
-  }
-
   .sidebar.active {
     display: flex;
   }

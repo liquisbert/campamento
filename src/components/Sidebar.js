@@ -58,7 +58,6 @@ const Sidebar = ({ userData, onLogout, menuItems, activeTab, onTabChange, isOpen
             </div>
           </div>
           <div className="user-details">
-            <h3 className="user-name">{userData?.name || 'Usuario'}</h3>
             <p className="user-role">
               {userData?.role === 'staff' ? 'Staff' : 'Participante'}
             </p>
@@ -95,7 +94,6 @@ const Sidebar = ({ userData, onLogout, menuItems, activeTab, onTabChange, isOpen
             onClick={handleLogoutClick}
             title="Cerrar sesión"
           >
-            <span className="logout-icon">🚪</span>
             <span className="logout-text">Cerrar Sesión</span>
           </button>
         </div>
