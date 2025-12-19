@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getCurrentUserData, logoutUser, getAllUsers, updateUserRole } from '../firebase/auth';
 import { getScheduleEvents, createScheduleEvent, updateScheduleEvent, deleteScheduleEvent } from '../firebase/schedule';
 import Sidebar from './Sidebar';

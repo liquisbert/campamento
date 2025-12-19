@@ -10,11 +10,11 @@ const MealCheckInAttendance = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [eventCheckins, setEventCheckins] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [sortBy, setSortBy] = useState('marked'); // 'marked' or 'notMarked'
 
   // Load events and users on mount
   useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadData = async () => {
@@ -42,6 +42,7 @@ const MealCheckInAttendance = () => {
     if (selectedEventId) {
       loadEventCheckins();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEventId]);
 
   const loadEventCheckins = async () => {

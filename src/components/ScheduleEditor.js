@@ -41,12 +41,6 @@ const ScheduleEditor = ({ events, onAdd, onUpdate, onDelete }) => {
     setShowForm(false);
   };
 
-  const handleEdit = (event) => {
-    setFormData(event);
-    setEditingId(event.id);
-    setShowForm(true);
-  };
-
   const handleCancel = () => {
     setFormData({
       title: '',
