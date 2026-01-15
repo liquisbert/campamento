@@ -1,10 +1,12 @@
 import React from 'react';
 import QRDisplay from './QRDisplay';
+import ParticipantRegistration from './ParticipantRegistration';
 import './UserManagement.css';
 
-const UserManagement = ({ users, onUpdateRole }) => {
+const UserManagement = ({ users, onUpdateRole, onUserRegistered }) => {
   const [selectedUser, setSelectedUser] = React.useState(null);
   const [filterRole, setFilterRole] = React.useState('all');
+  const [showRegistration, setShowRegistration] = React.useState(false);
 
   const filteredUsers = filterRole === 'all' 
     ? users 
@@ -32,6 +34,12 @@ const UserManagement = ({ users, onUpdateRole }) => {
           <span>🧑 Participantes: {users.filter(u => u.role === 'participant').length}</span>
           <span>👨‍💼 Staff: {users.filter(u => u.role === 'staff').length}</span>
         </div>
+        <button 
+          className="btn btn-primary btn-register"
+          onClick={() => setShowRegistration(true)}
+        >
+          ➕ Registrar Nuevo Participante
+        </button>
       </div>
 
       {selectedUser && (
@@ -106,6 +114,17 @@ const UserManagement = ({ users, onUpdateRole }) => {
           </tbody>
         </table>
       </div>
+
+      {showRegistration && (
+        <ParticipantRegistration 
+          onClose={() => {
+            setShowRegistration(false);
+            if (onUserRegistered) {
+              onUserRegistered();
+            }
+          }}
+        />
+      )}
     </div>
   );
 };

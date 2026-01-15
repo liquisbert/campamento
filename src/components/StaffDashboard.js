@@ -6,7 +6,6 @@ import ScheduleEditor from './ScheduleEditor';
 import UserManagement from './UserManagement';
 import MealCheckIn from './MealCheckIn';
 import MealCheckInAttendance from './MealCheckInAttendance';
-import ParticipantRegistration from './ParticipantRegistration';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 
@@ -17,7 +16,6 @@ const StaffDashboard = ({ currentUser }) => {
   const [scheduleEvents, setScheduleEvents] = useState([]);
   const [activeTab, setActiveTab] = useState('qr-scanner');
   const [loading, setLoading] = useState(true);
-  const [showRegistration, setShowRegistration] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -191,21 +189,12 @@ const StaffDashboard = ({ currentUser }) => {
             <UserManagement 
               users={allUsers}
               onUpdateRole={handleUpdateUserRole}
-            />
-          </div>
-        )}
-
-        {showRegistration && (
-          <ParticipantRegistration 
-            onClose={() => {
-              setShowRegistration(false);
-              const fetchUsers = async () => {
+              onUserRegistered={async () => {
                 const users = await getAllUsers();
                 setAllUsers(users);
-              };
-              fetchUsers();
-            }}
-          />
+              }}
+            />
+          </div>
         )}
       </div>
     </div>

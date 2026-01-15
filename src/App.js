@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { onAuthChange, getCurrentUserData } from './firebase/auth';
+import { onAuthChange } from './firebase/auth';
 import Login from './components/Login';
 import Register from './components/Register';
 import ParticipantDashboard from './components/ParticipantDashboard';
@@ -16,13 +16,25 @@ function App() {
     const unsubscribe = onAuthChange(async (user) => {
       if (user) {
         try {
-          const data = await getCurrentUserData(user.uid);
-          setUserData(data);
+          // Primero intenta obtener datos del localStorage (para login QR)
+          const storedData = localStorage.getItem('participantData');
+          if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            setUserData(parsedData);
+          } else {
+            // Si no hay datos en localStorage, intenta obtener del Firestore
+            const { getCurrentUserData } = await import('./firebase/auth');
+            const data = await getCurrentUserData(user.uid);
+            setUserData(data);
+          }
         } catch (error) {
           console.error('Error fetching user data:', error);
+          setUserData(null);
         }
       } else {
         setUserData(null);
+        localStorage.removeItem('participantData');
+        localStorage.removeItem('participantUID');
       }
       setCurrentUser(user);
       setLoading(false);
@@ -57,8 +69,8 @@ function App() {
           </>
         ) : (
           <>
-            <Route path="/" element={<ParticipantDashboard currentUser={currentUser} />} />
-            <Route path="/participant-dashboard" element={<ParticipantDashboard currentUser={currentUser} />} />
+            <Route path="/" element={<ParticipantDashboard currentUser={currentUser} userData={userData} />} />
+            <Route path="/participant-dashboard" element={<ParticipantDashboard currentUser={currentUser} userData={userData} />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </>
         )}
